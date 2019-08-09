@@ -1,0 +1,1 @@
+package com.iinaq.userapi.vo;

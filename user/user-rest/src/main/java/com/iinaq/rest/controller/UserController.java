@@ -1,0 +1,121 @@
+package com.iinaq.rest.controller;
+
+import com.alibaba.fastjson.JSON;
+import com.google.common.util.concurrent.RateLimiter;
+import com.iinaq.userapi.api.UserService;
+import com.iinaq.orderapi.vo.req.OrderNoReqVO;
+import com.iinaq.userapi.vo.req.UserReqVO;
+import com.iinaq.orderapi.vo.res.OrderNoResVO;
+import com.iinaq.userapi.vo.res.UserResVO;
+import com.iinaq.client.api.OrderServiceClient;
+import com.iinaq.common.enums.StatusEnum;
+import com.iinaq.common.res.BaseResponse;
+import com.iinaq.rest.req.OrderNoReq;
+import com.iinaq.rest.res.UserRes;
+import io.swagger.annotations.Api;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+/**
+ * Function:user控制器
+ * @author crossoverJie
+ * Date: 2017/6/7 下午11:55
+ * @since JDK 1.8
+ */
+@RestController
+@Api(value = "userApi", description = "用户API", tags = {"用户服务"})
+public class UserController implements UserService {
+    private final static Logger logger = LoggerFactory.getLogger(UserController.class);
+
+    //@Autowired
+    private RestTemplate restTemplate;
+
+    @Autowired
+    private OrderServiceClient orderServiceClient ;
+
+    private final static int COUNT =10 ;
+
+
+    @Override
+    public BaseResponse<UserResVO> getOrderNo(@RequestBody UserReqVO userReq) {
+        OrderNoReq req = new OrderNoReq() ;
+        req.setReqNo("1213");
+        //调用远程服务
+        ResponseEntity<Object> res = restTemplate.postForEntity("http://sbc-order/order/getOrderNo", req, Object.class);
+        logger.info("res="+JSON.toJSONString(res));
+
+        logger.debug("入参="+ JSON.toJSONString(userReq));
+        UserRes userRes = new UserRes() ;
+        userRes.setUserId(123);
+        userRes.setUserName("张三");
+
+        userRes.setReqNo(userReq.getReqNo());
+        userRes.setCode(StatusEnum.SUCCESS.getCode());
+        userRes.setMessage("成功");
+
+        return userRes ;
+    }
+
+    @Override
+    public BaseResponse<UserResVO> getUserByFeign(@RequestBody UserReqVO userReq) {
+        //调用远程服务
+        OrderNoReqVO vo = new OrderNoReqVO() ;
+        vo.setReqNo(userReq.getReqNo());
+        BaseResponse<OrderNoResVO> orderNo = orderServiceClient.getOrderNo(vo);
+
+        logger.info("远程返回:"+JSON.toJSONString(orderNo));
+
+        UserRes userRes = new UserRes() ;
+        userRes.setUserId(123);
+        userRes.setUserName("张三");
+
+        userRes.setReqNo(userReq.getReqNo());
+        userRes.setCode(StatusEnum.SUCCESS.getCode());
+        userRes.setMessage("成功");
+
+        return userRes ;
+    }
+
+    @Override
+    public BaseResponse<UserResVO> getUserByFeignBatch(@RequestBody UserReqVO userReqVO) {
+        //调用远程服务
+        OrderNoReqVO vo = new OrderNoReqVO() ;
+        vo.setReqNo(userReqVO.getReqNo());
+
+        RateLimiter limiter = RateLimiter.create(2.0) ;
+        //批量调用
+        for (int i = 0 ;i< COUNT ; i++){
+            double acquire = limiter.acquire();
+            logger.debug("获取令牌成功!,消耗=" + acquire);
+            BaseResponse<OrderNoResVO> orderNo = orderServiceClient.getOrderNo(vo);
+            logger.debug("远程返回:"+JSON.toJSONString(orderNo));
+        }
+
+        UserRes userRes = new UserRes() ;
+        userRes.setUserId(123);
+        userRes.setUserName("张三");
+
+        userRes.setReqNo(userReqVO.getReqNo());
+        userRes.setCode(StatusEnum.SUCCESS.getCode());
+        userRes.setMessage("成功");
+
+        return userRes ;
+    }
+
+
+    @Override
+    public BaseResponse<OrderNoResVO> getUserByHystrix(@RequestBody UserReqVO userReqVO) {
+
+        OrderNoReqVO vo = new OrderNoReqVO() ;
+        vo.setAppId(123L);
+        vo.setReqNo(userReqVO.getReqNo());
+        BaseResponse<OrderNoResVO> orderNo = orderServiceClient.getOrderNo(vo);
+        return orderNo ;
+    }
+
+}
