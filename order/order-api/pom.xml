@@ -29,6 +29,7 @@
         <dependency>
             <groupId>com.iinaq</groupId>
             <artifactId>common</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
