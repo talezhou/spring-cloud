@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <property name="LOG_PATH" value="/opt/logs/eureka" />
+    <property name="LOG_PATH" value="/opt/logs/sbc-service" />
     <property name="LOG_FILE_NAME" value="service" />
     <property name="LOG_FILE" value="service.log"/>
 
