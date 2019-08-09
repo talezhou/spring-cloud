@@ -1,4 +1,4 @@
-package com.iinaq.api.vo.res;
+package com.iinaq.orderapi.vo.res;
 
 public class OrderNoResVO {
     private Long orderId ;

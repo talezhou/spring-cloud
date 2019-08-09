@@ -1,4 +1,4 @@
-package com.iinaq.api.vo.req;
+package com.iinaq.orderapi.vo.req;
 
 import com.iinaq.common.req.BaseRequest;
 import io.swagger.annotations.ApiModelProperty;

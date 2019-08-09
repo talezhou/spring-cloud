@@ -1,8 +1,8 @@
 package com.iinaq.rest.controller;
 
-import com.iinaq.api.api.OrderService;
-import com.iinaq.api.vo.req.OrderNoReqVO;
-import com.iinaq.api.vo.res.OrderNoResVO;
+import com.iinaq.orderapi.api.OrderService;
+import com.iinaq.orderapi.vo.req.OrderNoReqVO;
+import com.iinaq.orderapi.vo.res.OrderNoResVO;
 import com.iinaq.common.enums.StatusEnum;
 import com.iinaq.common.exception.SBCException;
 import com.iinaq.common.res.BaseResponse;

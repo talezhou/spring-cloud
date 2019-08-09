@@ -1,7 +1,7 @@
-package com.iinaq.api.api;
+package com.iinaq.orderapi.api;
 
-import com.iinaq.api.vo.req.OrderNoReqVO;
-import com.iinaq.api.vo.res.OrderNoResVO;
+import com.iinaq.orderapi.vo.req.OrderNoReqVO;
+import com.iinaq.orderapi.vo.res.OrderNoResVO;
 import com.iinaq.common.res.BaseResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

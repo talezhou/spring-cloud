@@ -1,7 +1,7 @@
 package com.iinaq.client.fallback;
 
-import com.iinaq.api.vo.req.OrderNoReqVO;
-import com.iinaq.api.vo.res.OrderNoResVO;
+import com.iinaq.orderapi.vo.req.OrderNoReqVO;
+import com.iinaq.orderapi.vo.res.OrderNoResVO;
 import com.iinaq.client.api.OrderServiceClient;
 import com.iinaq.common.enums.StatusEnum;
 import com.iinaq.common.res.BaseResponse;
